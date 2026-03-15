@@ -2,7 +2,7 @@
 #include <string.h> 
 int main()
 {
-    char str[300]={"Selam guzeller ben dünyaaaa!"};
+    char str[300]={"Selam guzeller ben dünyaaaa!\0"};
     char bul[20]={"guzeller"};
     char *sonuc = strstr(str,bul);
     if(sonuc!=NULL)
