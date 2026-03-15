@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <string.h> 
+
 int main(){
-	char metin[10000]={"Yazılım dünyasında en sık karşılaşılan hatalardan biri, karakter dizilerinin sonuna 'null terminator' eklemeyi unutmaktır. C programlama dili bu konuda çok hassastır. Eğer dikkat edilmezse, bilgisayar hafızadaki rastgele karakterleri de ekrana basabilir."};
-	char bul[100]={"Karşılaştırılan\0"};
+	char metin[10000]={"My name is Alex. Every day, I wake up at 7:00 AM. I drink a cup of coffee and read the news. Then, I go to work by bus. I love my job because my colleagues are very friendly. In the evening, I cook dinner and watch a movie before I go to sleep."};
+	char bul[100]={"ALEX\0"};
+	strlwr (metin);
+	strlwr (bul);
 	char *sonuc=strstr(metin,bul);
 	
 	if(sonuc!=NULL){
