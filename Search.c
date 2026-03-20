@@ -1,19 +1,38 @@
 #include <stdio.h>
 #include <string.h> 
+#include <ctype.h>
 
-int main(){
-	char metin[10000]={"My name is Alex. Every day, I wake up at 7:00 AM. I drink a cup of coffee and read the news. Then, I go to work by bus. I love my job because my colleagues are very friendly. In the evening, I cook dinner and watch a movie before I go to sleep."};
-	char bul[100]={"MY"};
-	strlwr (metin);
-	strlwr (bul);
-	char *sonuc=strstr(metin,bul);
-	
-	if(sonuc!=NULL){
-		printf("%s aranan kelime\n",bul);
+int metinbul(char *metin,char *aranan){
+	return strstr(metin,aranan)!=NULL;
+}
+void strlwr(char *str){
+	for(int i=0;str[i];i++){
+		str[i]=tolower(str[i]);
 	}
-	else{
-		printf("Kelime yok");
-	}
-	return 0;
-	
+}
+int Kackere(char*metin,char*aranan){
+	int sayi=0;
+	char *ptr = metin;
+    int uzunluk = strlen(aranan);
+
+    while ((ptr = strstr(ptr, aranan)) != NULL) {
+        sayi++;
+        ptr += uzunluk;
+    }
+    return sayi;
+}
+void satirAra(char *satir, char *aranan, int satirNo) {
+    char satirKopya[1000];
+    char arananKopya[100];
+
+    strcpy(satirKopya, satir);
+    strcpy(arananKopya, aranan);
+
+    strlwr(satirKopya);
+    strlwr(arananKopya);
+
+    if (metinbul(satirKopya, arananKopya)) {
+        int tekrar = Kackere(satirKopya, arananKopya);
+        printf("Satir %d (%dx): %s", satirNo, tekrar, satir);
+    }
 }
