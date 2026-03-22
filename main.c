@@ -54,8 +54,14 @@ int main() {
     FILE *dosya;
     char arananKelime[KELIME_SIZE];
     char satir[BUFFER_SIZE];
-    char *dosyaYolu = "veriler.txt";
+    char dosyaYolu[BUFFER_SIZE]; // Sabit metin yerine dizi olarak güncellendi
     int satirNo = 1;       
+
+    //-----------Dosya adı alma kısmı--------
+    printf("Arama yapilacak dosya adini giriniz (orn: veriler.txt): ");
+    if (fgets(dosyaYolu, BUFFER_SIZE, stdin) != NULL) {
+        dosyaYolu[strcspn(dosyaYolu, "\n")] = 0; // Sondaki alt satır karakterini temizle
+    }
 
     //-----------Kelime alma kısmı--------
     printf("Aramak istediginiz kelimeyi giriniz: ");
