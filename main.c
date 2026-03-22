@@ -27,23 +27,25 @@ int Kackere(char *metin, char *aranan) {
     }
     return sayi;
 }
+//satirAra: Verilen satirda aranan kelimeyi arar.Parametreler: satir (incelenecek metin), aranan (kelime), satirNo (satir numarasi)
 
 void satirAra(char *satir, char *aranan, int satirNo) {
     char satirKopya[BUFFER_SIZE];
     char arananKopya[KELIME_SIZE];
 
-    strcpy(satirKopya, satir);
-    strcpy(arananKopya, aranan);
+    strncpy(satirKopya, satir, BUFFER_SIZE - 1);
+    satirKopya[BUFFER_SIZE - 1] = '\0';
 
-	kucukHarfCevir(satirKopya);
+	strncpy(arananKopya, aranan, KELIME_SIZE - 1);
+    arananKopya[KELIME_SIZE - 1] = '\0';
+
+    kucukHarfCevir(satirKopya);
     kucukHarfCevir(arananKopya);
-    
-      char *konum = strstr(satirKopya, arananKopya);
 
     if (metinbul(satirKopya, arananKopya)) {
         int tekrar = Kackere(satirKopya, arananKopya);
-        int org = konum - satirKopya;
-        printf("Satir %d (%dx): %s", satirNo, tekrar, satir+org);
+        satir[strcspn(satir, "\n")] = '\0';
+        printf("Satir %d (%dx): %s\n", satirNo, tekrar, satir);
     }
 }
 
