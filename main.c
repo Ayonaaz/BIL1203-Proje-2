@@ -29,7 +29,7 @@ int Kackere(char *metin, char *aranan) {
 }
 //satirAra: Verilen satirda aranan kelimeyi arar.Parametreler: satir (incelenecek metin), aranan (kelime), satirNo (satir numarasi)
 
-void satirAra(char *satir, char *aranan, int satirNo) {
+void satirAra(char *satir, char *aranan, int satirNo,FILE *ciktiDosya) {
     char satirKopya[BUFFER_SIZE];
     char arananKopya[KELIME_SIZE];
 
@@ -46,16 +46,27 @@ void satirAra(char *satir, char *aranan, int satirNo) {
         int tekrar = Kackere(satirKopya, arananKopya);
         satir[strcspn(satir, "\n")] = '\0';
         printf("Satir %d (%dx): %s\n", satirNo, tekrar, satir);
+		if (ciktiDosya != NULL) {
+   			 fprintf(ciktiDosya, "Satir %d (%dx): %s\n", satirNo, tekrar, satir);
+			}
     }
 }
 
 //-----------Fonksiyonların çağırıldığı kısım
 int main() {
     FILE *dosya;
+    FILE *ciktiDosya;
+	char ciktiYolu[BUFFER_SIZE];	
     char arananKelime[KELIME_SIZE];
     char satir[BUFFER_SIZE];
-    char *dosyaYolu = "veriler.txt";
+    char dosyaYolu[BUFFER_SIZE]; // Sabit metin yerine dizi olarak güncellendi
     int satirNo = 1;       
+
+    //-----------Dosya adı alma kısmı--------
+    printf("Arama yapilacak dosya adini giriniz (orn: veriler.txt): ");
+    if (fgets(dosyaYolu, BUFFER_SIZE, stdin) != NULL) {
+        dosyaYolu[strcspn(dosyaYolu, "\n")] = 0; // Sondaki alt satır karakterini temizle
+    }
 
     //-----------Kelime alma kısmı--------
     printf("Aramak istediginiz kelimeyi giriniz: ");
@@ -65,6 +76,13 @@ int main() {
 
     //---------------Dosyayı aç-----------
     dosya = fopen(dosyaYolu, "r");
+    snprintf(ciktiYolu, BUFFER_SIZE, "%s_%s_sonuc.txt", dosyaYolu, arananKelime);
+	ciktiDosya = fopen(ciktiYolu, "w");
+	if (ciktiDosya == NULL) {
+    fprintf(stderr, "Hata: cikti dosyasi olusturulamadi!\n");
+    fclose(dosya);
+    return 1;
+}
     if (dosya == NULL) {
         fprintf(stderr, "Hata: '%s' dosyasi bulunamadi!\n", dosyaYolu);
         return 1;
@@ -75,11 +93,11 @@ int main() {
 
     //satır satır arama yapan kısım
     while (fgets(satir, BUFFER_SIZE, dosya) != NULL) {
-        satirAra(satir, arananKelime, satirNo);  
+        satirAra(satir, arananKelime, satirNo,ciktiDosya);  
         satirNo++;                                
     }
 
-    fclose(dosya);
+    fclose(dosya);fclose(ciktiDosya);
 
     printf("----------------------------------------------------------\n");
     printf("Arama tamamlandi.\n");
